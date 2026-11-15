@@ -16,6 +16,9 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu">
+            <i data-lucide="menu"></i>
+        </button>
         <ul class="nav-links">
             <li><a href="index.html">Explore</a></li>
             <li><a href="index.html#collections">Collections</a></li>
@@ -27,6 +30,35 @@
             <i data-lucide="search"></i>
         </div>
     </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" aria-hidden="true"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+        <div class="mobile-drawer-header">
+            <span class="mobile-drawer-logo">HUSH</span>
+            <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-nav-link">Explore</a></li>
+            <li><a href="index.html#collections" class="mobile-nav-link">Collections</a></li>
+            <li><a href="index.html#new-arrivals" class="mobile-nav-link">New Arrivals</a></li>
+            <li><a href="index.html#about" class="mobile-nav-link">About</a></li>
+            <li><a href="index.html#reviews" class="mobile-nav-link">Reviews</a></li>
+            <li><a href="product.html" class="mobile-nav-link mobile-nav-highlight">Shop Bag &rarr;</a></li>
+        </ul>
+        <div class="mobile-drawer-footer">
+            <p class="mobile-drawer-tagline">Avant-Garde Luxury & Futurism</p>
+            <div class="mobile-drawer-socials">
+                <a href="#">Instagram</a>
+                <span>&bull;</span>
+                <a href="#">TikTok</a>
+                <span>&bull;</span>
+                <a href="#">Pinterest</a>
+            </div>
+        </div>
+    </aside>
 
     <main class="product-page">
         <div class="product-container">
@@ -176,6 +208,34 @@
 
     <script>
         lucide.createIcons();
+
+        // Mobile Navigation Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileDrawerClose = document.getElementById('mobileDrawerClose');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function openMobileMenu() {
+            if (mobileNavDrawer && mobileNavOverlay) {
+                mobileNavDrawer.classList.add('open');
+                mobileNavOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileMenu() {
+            if (mobileNavDrawer && mobileNavOverlay) {
+                mobileNavDrawer.classList.remove('open');
+                mobileNavOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+        if (mobileDrawerClose) mobileDrawerClose.addEventListener('click', closeMobileMenu);
+        if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', closeMobileMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
 
         function changeImage(src, element) {
             document.getElementById('mainProductImage').src = src;
