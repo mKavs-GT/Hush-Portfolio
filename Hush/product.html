@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product | HUSH Premium Bags</title>
-    <link rel="stylesheet" href="/Portfolio/E-Commerce/hush/style.css">
+    <meta name="description" content="HUSH Premium Bag - Crafted with avant-garde aesthetics and luxury Italian leather.">
+    <title>HUSH Premium Bag | HUSH</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -16,12 +17,12 @@
     <!-- Navbar -->
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="/Home">Explore</a></li>
-            <li><a href="#">Collections</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Reviews</a></li>
+            <li><a href="index.html">Explore</a></li>
+            <li><a href="index.html#collections">Collections</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#reviews">Reviews</a></li>
         </ul>
-        <div class="nav-logo">HUSH</div>
+        <a href="index.html" class="nav-logo">HUSH</a>
         <div class="nav-icons">
             <i data-lucide="search"></i>
         </div>
@@ -32,20 +33,20 @@
             <!-- Left Gallery -->
             <div class="product-gallery">
                 <div class="main-image-container">
-                    <img id="mainProductImage" src="/Portfolio/E-Commerce/hush/images/1.jpg" alt="Airpods- Max">
+                    <img id="mainProductImage" src="images/1.jpg" alt="HUSH Premium Bag">
                 </div>
                 <div class="thumbnail-list">
                     <div class="thumb active" onclick="changeImage('images/1.jpg', this)">
-                        <img src="/Portfolio/E-Commerce/hush/images/1.jpg" alt="Thumb 1">
+                        <img src="images/1.jpg" alt="Thumb 1">
                     </div>
                     <div class="thumb" onclick="changeImage('images/2.jpg', this)">
-                        <img src="/Portfolio/E-Commerce/hush/images/2.jpg" alt="Thumb 2">
+                        <img src="images/2.jpg" alt="Thumb 2">
                     </div>
                     <div class="thumb" onclick="changeImage('images/3.jpg', this)">
-                        <img src="/Portfolio/E-Commerce/hush/images/3.jpg" alt="Thumb 3">
+                        <img src="images/3.jpg" alt="Thumb 3">
                     </div>
                     <div class="thumb" onclick="changeImage('images/4.jpg', this)">
-                        <img src="/Portfolio/E-Commerce/hush/images/4.jpg" alt="Thumb 4">
+                        <img src="images/4.jpg" alt="Thumb 4">
                     </div>
                 </div>
             </div>
@@ -53,7 +54,7 @@
             <!-- Right Details -->
             <div class="product-details">
                 <h1 class="product-title">HUSH Premium Bag</h1>
-                <p class="product-desc">A perfect balance of exhilarating high-fidelity audio and the effortless magic of AirPods.</p>
+                <p class="product-desc">A perfect balance of avant-garde aesthetics, artisanal leather craftsmanship, and contemporary luxury.</p>
                 
                 <div class="product-rating">
                     <div class="stars">
@@ -170,7 +171,7 @@
                 <a href="#">Terms of Service</a>
             </div>
         </div>
-        <img src="/Portfolio/E-Commerce/hush/images/chrome_busts.png" alt="Chrome busts" class="chrome-busts">
+        <img src="images/chrome_busts.png" alt="Chrome busts" class="chrome-busts">
     </footer>
 
     <script>
@@ -188,6 +189,38 @@
             if (current + change > 0) {
                 qtySpan.innerText = current + change;
             }
+        }
+
+        // Color swatch selector
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+                swatch.classList.add('active');
+            });
+        });
+
+        // Add to Cart / Buy Now feedback
+        const addToCartBtn = document.querySelector('.btn-add-cart');
+        const buyNowBtn = document.querySelector('.btn-buy-now');
+
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', () => {
+                const originalText = addToCartBtn.innerText;
+                addToCartBtn.innerText = 'Added to Cart!';
+                addToCartBtn.style.backgroundColor = '#2e7d32';
+                addToCartBtn.style.color = '#fff';
+                setTimeout(() => {
+                    addToCartBtn.innerText = originalText;
+                    addToCartBtn.style.backgroundColor = '';
+                    addToCartBtn.style.color = '';
+                }, 2000);
+            });
+        }
+
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener('click', () => {
+                alert('Order placed successfully! Thank you for choosing HUSH.');
+            });
         }
     </script>
 </body>
