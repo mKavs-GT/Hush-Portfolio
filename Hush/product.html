@@ -279,9 +279,207 @@
 
         if (buyNowBtn) {
             buyNowBtn.addEventListener('click', () => {
-                alert('Order placed successfully! Thank you for choosing HUSH.');
+                // Replaced by rich UI modal
             });
         }
+    </script>
+
+    <!-- HUSH LUXURY DIALOG MODAL -->
+    <div id="hush-dialog-overlay" class="hush-dialog-overlay">
+        <div class="hush-dialog-card">
+            <button class="hush-dialog-close" id="hush-dialog-close" aria-label="Close dialog">&times;</button>
+            <div class="hush-dialog-icon" id="hush-dialog-icon">&#10003;</div>
+            <div class="hush-dialog-badge" id="hush-dialog-badge">ACCEPTED</div>
+            <h3 class="hush-dialog-title" id="hush-dialog-title">Order Confirmed</h3>
+            <p class="hush-dialog-desc" id="hush-dialog-desc"></p>
+            <div class="hush-dialog-details" id="hush-dialog-details"></div>
+            <button class="hush-dialog-btn" id="hush-dialog-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- HUSH TOAST -->
+    <div id="hush-toast" class="hush-toast">
+        <span id="hush-toast-msg">Item added to your shopping bag</span>
+    </div>
+
+    <script>
+        // --- HUSH INTERACTIVE LOGIC & MODAL SYSTEM (PRODUCT) ---
+        const hushOverlay = document.getElementById('hush-dialog-overlay');
+        const hushClose = document.getElementById('hush-dialog-close');
+        const hushBtn = document.getElementById('hush-dialog-btn');
+        const hushTitle = document.getElementById('hush-dialog-title');
+        const hushDesc = document.getElementById('hush-dialog-desc');
+        const hushBadge = document.getElementById('hush-dialog-badge');
+        const hushDetails = document.getElementById('hush-dialog-details');
+        const hushIcon = document.getElementById('hush-dialog-icon');
+        const hushToast = document.getElementById('hush-toast');
+        const hushToastMsg = document.getElementById('hush-toast-msg');
+
+        function showHushModal(opts) {
+            if (!hushOverlay) return;
+            if (hushBadge) hushBadge.textContent = opts.badge || 'ACCEPTED';
+            if (hushTitle) hushTitle.textContent = opts.title || 'Notice';
+            if (hushDesc) hushDesc.textContent = opts.message || '';
+            if (hushIcon) hushIcon.innerHTML = opts.icon || '&#10003;';
+
+            if (hushDetails && opts.details) {
+                hushDetails.innerHTML = opts.details.map(d => `
+                    <div class="hush-detail-row">
+                        <span class="hush-detail-label">${d.label}</span>
+                        <span class="hush-detail-val ${d.highlight ? 'highlight' : ''}">${d.value}</span>
+                    </div>
+                `).join('');
+                hushDetails.style.display = 'flex';
+            } else if (hushDetails) {
+                hushDetails.style.display = 'none';
+            }
+
+            hushOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHushModal() {
+            if (hushOverlay) {
+                hushOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (hushClose) hushClose.addEventListener('click', closeHushModal);
+        if (hushBtn) hushBtn.addEventListener('click', closeHushModal);
+        if (hushOverlay) {
+            hushOverlay.addEventListener('click', (e) => {
+                if (e.target === hushOverlay) closeHushModal();
+            });
+        }
+
+        let toastTimer;
+        function showHushToast(msg) {
+            if (!hushToast) return;
+            if (hushToastMsg) hushToastMsg.textContent = msg;
+            hushToast.classList.add('active');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                hushToast.classList.remove('active');
+            }, 3000);
+        }
+
+        // REPLACE NATIVE ALERT WITH LUXURY ORDER ACCEPTED MODAL
+        const buyNowBtn = document.querySelector('.btn-buy-now');
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener('click', () => {
+                const qty = document.getElementById('qtyValue')?.innerText || '1';
+                const orderId = 'HUSH-' + Math.floor(100000 + Math.random() * 900000);
+
+                showHushModal({
+                    badge: 'ORDER ACCEPTED & CONFIRMED',
+                    title: 'Thank You For Your Order',
+                    message: 'Your bespoke order has been accepted into our Milan fulfillment atelier. White-glove courier dispatch initiated.',
+                    details: [
+                        { label: 'Order ID', value: orderId, highlight: true },
+                        { label: 'Item', value: 'Hush Signature Leather Bag' },
+                        { label: 'Quantity', value: qty },
+                        { label: 'Amount Paid', value: '
+
+</html>
+ + (320 * parseInt(qty)) + '.00', highlight: true },
+                        { label: 'Delivery Service', value: 'Complimentary Express 2-Day Air' },
+                        { label: 'Status', value: 'Payment Accepted & Packing', highlight: true }
+                    ]
+                });
+            });
+        }
+
+        // Add to Cart toast
+        const addToCartBtn = document.querySelector('.btn-add-cart');
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', () => {
+                showHushToast('✓ Handbag added to your shopping bag!');
+            });
+        }
+
+        // Postal code check link
+        const postalLink = document.querySelector('.delivery-option a[href="#"]');
+        if (postalLink) {
+            postalLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showHushModal({
+                    badge: 'DELIVERY AVAILABILITY ACCEPTED',
+                    title: 'Express Delivery Available',
+                    message: 'Express white-glove courier service is active for your postal area with real-time signature delivery.',
+                    details: [
+                        { label: 'Estimated Delivery', value: 'Within 48 Hours' },
+                        { label: 'Shipping Fee', value: 'Complimentary ($0.00)' },
+                        { label: 'Carrier', value: 'FedEx Priority Overnight' }
+                    ]
+                });
+            });
+        }
+
+        // Details link for returns
+        const detailsLinks = document.querySelectorAll('.delivery-option a');
+        if (detailsLinks.length > 1) {
+            detailsLinks[1].addEventListener('click', (e) => {
+                e.preventDefault();
+                showHushModal({
+                    badge: 'HUSH GUARANTEE',
+                    title: '30-Day Returns Policy',
+                    message: 'We accept returns of unused items in original packaging with protective seals intact within 30 days of receipt.',
+                    details: [
+                        { label: 'Return Shipping', value: 'Pre-paid Label Included' },
+                        { label: 'Refund Method', value: 'Original Payment Method' },
+                        { label: 'Processing Time', value: '3-5 Business Days' }
+                    ]
+                });
+            });
+        }
+
+        // Newsletter in product footer
+        const prodSubscribeBtn = document.querySelector('.subscribe-box button');
+        const prodSubscribeInput = document.querySelector('.subscribe-box input');
+        if (prodSubscribeBtn && prodSubscribeInput) {
+            prodSubscribeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = prodSubscribeInput.value.trim();
+                if (!email || !email.includes('@')) {
+                    showHushToast('Please enter a valid email address.');
+                    return;
+                }
+                const memberId = 'HUSH-VIP-' + Math.floor(100000 + Math.random() * 900000);
+                showHushModal({
+                    badge: 'MEMBERSHIP ACCEPTED',
+                    title: 'Welcome to HUSH Privé',
+                    message: 'Your membership invitation has been accepted. Code HUSH10 is active for 10% off your purchase.',
+                    details: [
+                        { label: 'Member ID', value: memberId, highlight: true },
+                        { label: 'Email', value: email },
+                        { label: 'Promo Code', value: 'HUSH10', highlight: true }
+                    ]
+                });
+                prodSubscribeInput.value = '';
+            });
+        }
+
+        // Footer links
+        document.querySelectorAll('a[href="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = link.textContent.trim().toLowerCase();
+                if (text.includes('instagram') || text.includes('tiktok') || text.includes('pinterest')) {
+                    showHushToast('Connecting to official HUSH ' + link.textContent.trim() + '...');
+                } else if (text.includes('privacy') || text.includes('terms')) {
+                    showHushModal({
+                        badge: 'LEGAL & PRIVACY',
+                        title: link.textContent.trim(),
+                        message: 'Your personal information is secured with 256-bit SSL encryption. We never trade or distribute client purchase data.',
+                        details: [
+                            { label: 'Security', value: 'PCI DSS Level 1 Certified' },
+                            { label: 'Return Window', value: '30 Days Complimentary' }
+                        ]
+                    });
+                }
+            });
+        });
     </script>
 </body>
 

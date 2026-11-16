@@ -563,6 +563,182 @@
             });
         });
     </script>
+
+    <!-- HUSH LUXURY DIALOG MODAL -->
+    <div id="hush-dialog-overlay" class="hush-dialog-overlay">
+        <div class="hush-dialog-card">
+            <button class="hush-dialog-close" id="hush-dialog-close" aria-label="Close dialog">&times;</button>
+            <div class="hush-dialog-icon" id="hush-dialog-icon">&#10003;</div>
+            <div class="hush-dialog-badge" id="hush-dialog-badge">ACCEPTED</div>
+            <h3 class="hush-dialog-title" id="hush-dialog-title">Order Confirmed</h3>
+            <p class="hush-dialog-desc" id="hush-dialog-desc"></p>
+            <div class="hush-dialog-details" id="hush-dialog-details"></div>
+            <button class="hush-dialog-btn" id="hush-dialog-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- HUSH TOAST -->
+    <div id="hush-toast" class="hush-toast">
+        <span id="hush-toast-msg">Item added to your shopping bag</span>
+    </div>
+
+    <script>
+        // --- HUSH INTERACTIVE LOGIC & MODAL SYSTEM ---
+        const hushOverlay = document.getElementById('hush-dialog-overlay');
+        const hushClose = document.getElementById('hush-dialog-close');
+        const hushBtn = document.getElementById('hush-dialog-btn');
+        const hushTitle = document.getElementById('hush-dialog-title');
+        const hushDesc = document.getElementById('hush-dialog-desc');
+        const hushBadge = document.getElementById('hush-dialog-badge');
+        const hushDetails = document.getElementById('hush-dialog-details');
+        const hushIcon = document.getElementById('hush-dialog-icon');
+        const hushToast = document.getElementById('hush-toast');
+        const hushToastMsg = document.getElementById('hush-toast-msg');
+
+        function showHushModal(opts) {
+            if (!hushOverlay) return;
+            if (hushBadge) hushBadge.textContent = opts.badge || 'ACCEPTED';
+            if (hushTitle) hushTitle.textContent = opts.title || 'Notice';
+            if (hushDesc) hushDesc.textContent = opts.message || '';
+            if (hushIcon) hushIcon.innerHTML = opts.icon || '&#10003;';
+
+            if (hushDetails && opts.details) {
+                hushDetails.innerHTML = opts.details.map(d => `
+                    <div class="hush-detail-row">
+                        <span class="hush-detail-label">${d.label}</span>
+                        <span class="hush-detail-val ${d.highlight ? 'highlight' : ''}">${d.value}</span>
+                    </div>
+                `).join('');
+                hushDetails.style.display = 'flex';
+            } else if (hushDetails) {
+                hushDetails.style.display = 'none';
+            }
+
+            hushOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHushModal() {
+            if (hushOverlay) {
+                hushOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (hushClose) hushClose.addEventListener('click', closeHushModal);
+        if (hushBtn) hushBtn.addEventListener('click', closeHushModal);
+        if (hushOverlay) {
+            hushOverlay.addEventListener('click', (e) => {
+                if (e.target === hushOverlay) closeHushModal();
+            });
+        }
+
+        let toastTimer;
+        function showHushToast(msg) {
+            if (!hushToast) return;
+            if (hushToastMsg) hushToastMsg.textContent = msg;
+            hushToast.classList.add('active');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                hushToast.classList.remove('active');
+            }, 3000);
+        }
+
+        // Newsletter subscribe button in footer
+        const subscribeBtn = document.querySelector('.subscribe-box button');
+        const subscribeInput = document.querySelector('.subscribe-box input');
+        if (subscribeBtn && subscribeInput) {
+            subscribeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = subscribeInput.value.trim();
+                if (!email || !email.includes('@')) {
+                    showHushToast('Please enter a valid email address.');
+                    return;
+                }
+                const memberId = 'HUSH-VIP-' + Math.floor(100000 + Math.random() * 900000);
+                showHushModal({
+                    badge: 'MEMBERSHIP ACCEPTED',
+                    title: 'Welcome to HUSH Privé',
+                    message: 'Your membership invitation has been accepted. You now have exclusive first-access to private runway collections and atelier drops.',
+                    details: [
+                        { label: 'Member ID', value: memberId, highlight: true },
+                        { label: 'Account', value: email },
+                        { label: 'Welcome Code', value: 'HUSH10 (10% Off)', highlight: true },
+                        { label: 'Tier', value: 'Privé Haute Couture' },
+                        { label: 'Status', value: 'Active & Verified' }
+                    ]
+                });
+                subscribeInput.value = '';
+            });
+        }
+
+        // Search icon handler
+        const searchIcon = document.querySelector('.nav-icons');
+        if (searchIcon) {
+            searchIcon.addEventListener('click', () => {
+                showHushModal({
+                    badge: 'CURATED SEARCH',
+                    title: 'Search Atelier Catalog',
+                    message: 'Explore our latest luxury leather releases: The Brielle, Sabrina, and Naomi Handbags.',
+                    details: [
+                        { label: 'Featured 01', value: 'Brielle Leather Shoulder Bag' },
+                        { label: 'Featured 02', value: 'Sabrina Structured Tote' },
+                        { label: 'Featured 03', value: 'Naomi Sculptural Crossbody' },
+                        { label: 'Direct Shop', value: 'Available in product showcase' }
+                    ]
+                });
+            });
+        }
+
+        // Footer & Nav link routing
+        document.querySelectorAll('a[href="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = link.textContent.trim().toLowerCase();
+                if (text.includes('instagram') || text.includes('tiktok') || text.includes('pinterest')) {
+                    showHushToast('Connecting to official HUSH ' + link.textContent.trim() + '...');
+                } else if (text.includes('collections') || text.includes('new arrivals') || text.includes('bestsellers') || text.includes('lookbook') || text.includes('explore')) {
+                    const col = document.getElementById('collections') || document.getElementById('new-arrivals');
+                    if (col) col.scrollIntoView({ behavior: 'smooth' });
+                    else window.location.href = 'product.html';
+                } else if (text.includes('about')) {
+                    const ab = document.getElementById('about');
+                    if (ab) ab.scrollIntoView({ behavior: 'smooth' });
+                } else if (text.includes('contact')) {
+                    showHushModal({
+                        badge: 'ATELIER CONCIERGE',
+                        title: 'Client Services',
+                        message: 'Our private client advisors are available Monday through Saturday to assist with styling and bespoke commissions.',
+                        details: [
+                            { label: 'Concierge Email', value: 'concierge@hush-luxury.com' },
+                            { label: 'Atelier Phone', value: '+1 (800) 487-4874' },
+                            { label: 'Hours', value: '9:00 AM - 7:00 PM EST' }
+                        ]
+                    });
+                } else if (text.includes('sustainability') || text.includes('careers')) {
+                    showHushModal({
+                        badge: 'MAISON PHILOSOPHY',
+                        title: link.textContent.trim(),
+                        message: 'HUSH is dedicated to zero-waste handcrafted Italian leather production, ethical sourcing, and empowering master leather artisans globally.',
+                        details: [
+                            { label: 'Leather Origin', value: 'Tuscan Certified Tanners' },
+                            { label: 'Carbon Offset', value: '100% Net Zero Shipping' }
+                        ]
+                    });
+                } else if (text.includes('privacy') || text.includes('terms')) {
+                    showHushModal({
+                        badge: 'LEGAL & PRIVACY',
+                        title: link.textContent.trim(),
+                        message: 'Your personal information is secured with 256-bit SSL encryption. We never trade or distribute client purchase data.',
+                        details: [
+                            { label: 'Security', value: 'PCI DSS Level 1 Certified' },
+                            { label: 'Return Window', value: '30 Days Complimentary' }
+                        ]
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

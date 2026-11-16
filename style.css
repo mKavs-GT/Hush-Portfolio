@@ -2578,3 +2578,191 @@ a {
         overflow-x: auto;
     }
 }
+/* ======================================================== */
+/* HUSH LUXURY DIALOG MODAL & TOAST SYSTEM                  */
+/* ======================================================== */
+.hush-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(26, 26, 26, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.hush-dialog-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.hush-dialog-card {
+    background: #ffffff;
+    border: 1px solid rgba(228, 131, 152, 0.25);
+    border-radius: 28px;
+    max-width: 480px;
+    width: 100%;
+    padding: 40px 32px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(228, 131, 152, 0.15);
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #1a1a1a;
+    font-family: 'Outfit', sans-serif;
+}
+.hush-dialog-overlay.active .hush-dialog-card {
+    transform: scale(1) translateY(0);
+}
+.hush-dialog-close {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    background: #f7f7f7;
+    border: none;
+    color: #888;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.hush-dialog-close:hover {
+    background: #e48398;
+    color: #fff;
+}
+.hush-dialog-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: #fff0f3;
+    border: 2px solid #e48398;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #e48398;
+}
+.hush-dialog-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: #fff0f3;
+    border: 1px solid rgba(228, 131, 152, 0.4);
+    color: #e48398;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.hush-dialog-title {
+    color: #1a1a1a;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+}
+.hush-dialog-desc {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 22px;
+}
+.hush-dialog-details {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 12px;
+}
+.hush-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+.hush-detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.hush-detail-label {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+.hush-detail-val {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+.hush-detail-val.highlight {
+    color: #e48398;
+    font-weight: 700;
+}
+.hush-dialog-btn {
+    width: 100%;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+.hush-dialog-btn:hover {
+    background: #e48398;
+    transform: translateY(-1px);
+}
+.hush-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 14px 22px;
+    border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    z-index: 1000000;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.hush-toast.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+.nav-icons {
+    cursor: pointer;
+}
